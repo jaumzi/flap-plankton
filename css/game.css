@@ -13,12 +13,42 @@
 }
 
 #plankton {
-  transition-duration: 0.2s;
+  transition-duration: 0.3s;
 }
-
 #plankton>img { 
   max-width: 8vw;
   max-height: 20vh;
   object-fit: contain;
   padding: 2px;
 }
+
+.item {
+  transition-duration: 0.3s;
+  position: absolute;
+}
+
+.pineapple { 
+  max-width: 20vw;
+  max-height: 35vh;
+  object-fit: contain;
+}
+.siriqueijo { 
+  max-width: 20vw;
+  max-height: 30vh;
+  object-fit: contain;
+}
+
+.item-top {
+  top: 0;
+  right: 0;
+  transform: rotateX(180deg);
+}
+.item-middle {
+  top: 35vh;
+  right: 0;
+}
+.item-bottom {
+  bottom: 0;
+  right: 0;
+}
+
