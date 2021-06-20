@@ -1,0 +1,24 @@
+#game-root {
+  height: 100vh;
+  background-color: var(--main-color);
+  color: var(--text-color);
+  
+  display: none;
+}
+#game-root>.content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#plankton {
+  transition-duration: 0.2s;
+}
+
+#plankton>img { 
+  max-width: 8vw;
+  max-height: 20vh;
+  object-fit: contain;
+  padding: 2px;
+}

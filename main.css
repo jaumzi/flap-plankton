@@ -1,0 +1,39 @@
+@import './css/colors.css';
+@import './css/menu.css';
+@import './css/game.css';
+@import './css/loading.css';
+
+
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  height: 100vh;
+  width: 100vw;
+}
+
+button {
+  padding: 1em;
+  border: 1px solid black;
+  background-color: var(--button-bg-color);
+  border-radius: 6px;
+  color: var(--button-color);
+  text-transform: uppercase;
+  font-weight: 800;
+}
+button:hover {
+  background-color: var(--button-bg-hover-color);
+}
+button:active {
+  background-color: var(--button-bg-active-color);
+}

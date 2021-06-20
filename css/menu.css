@@ -1,0 +1,17 @@
+#menu-root {
+  height: 100vh;
+  padding: 5vh 5vw;
+  background-color: var(--main-color);
+  color: var(--text-color);
+  display: none;
+}
+
+#menu-root>.content {
+  height: 100%;
+  display: flex;
+  grid-gap: 2em;
+  gap: 2em;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
