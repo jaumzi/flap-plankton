@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt">
 
 <head>
   <meta charset='utf-8'>
@@ -12,11 +12,11 @@
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
 
   <link rel='stylesheet' type='text/css' media='screen' href='./main.css'>
-  <script src='./main.js'></script>
+  <script type="module" src='./main.js'></script>
 </head>
 
 <body id="root">
-  <div id="loading-root">
+  <!-- <div id="loading-root">
     <div id="loading">
       <span></span>
       <span></span>
@@ -30,17 +30,11 @@
 
       <button id="menu-init-game">Iniciar jogo</button>
     </div>
-  </div>
+  </div> -->
 
   <div id="game-root">
-    <div class="content">
-
-      <div id="plankton">
-        <img src="./assets/plakton.png" alt="Plankton" />
-      </div>
-      
-
-    </div>
+    <!-- <div class="game-info"></div> -->
+    <canvas id="game-content"></canvas>
   </div>
 </body>
 

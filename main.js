@@ -1,3 +1,5 @@
+import { Game } from "./scripts/Game.js";
+
 function getElementStyle(oElm, strCssRule){
   var strValue = "";
   if(document.defaultView && document.defaultView.getComputedStyle){
@@ -23,7 +25,7 @@ const loadComponent = async (path) => {
 }
 const loadJS = (jsFilePath, callback = () => {}) => {
   var js = document.createElement("script");
-  js.type = "text/javascript";
+  js.type = "module";
   js.src = jsFilePath;
   js.onreadystatechange = callback;
   js.onload = callback;
@@ -38,15 +40,35 @@ const hideComponent = (componentId) => {
 }
 
 
-window.onload = () => {
-  showComponent('loading-root');
-};
-window.addEventListener('load', function () {
-  this.setTimeout(() => {
-    showComponent('loading-root');
-    loadJS('./scripts/menu.js', () => {
-      hideComponent('loading-root');
-      showComponent('menu-root');
-    });
-  }, 2000);
-});
+const game = new Game();
+
+game.registerKeysListener();
+game.registerResizeListener();
+
+game.run();
+
+
+// document.addEventListener('keydown', function (event) {
+//   game.keyEvent[event.code] = true;
+// });
+// document.addEventListener('keyup', function (event) {
+//   game.keyEvent[event.code] = false;
+// });
+
+// window.onload = () => {
+//   showComponent('loading-root');
+// };
+// window.addEventListener('load', function () {
+//   this.setTimeout(() => {
+//     showComponent('loading-root');
+    // loadJS('./scripts/menu.js', () => {
+      // hideComponent('loading-root');
+      // showComponent('menu-root');
+    // });
+//   }, 2000);
+// });
+
+// loadJS('./scripts/game.js', () => {
+  // hideComponent('loading-root');
+  // showComponent('game-root');
+// });

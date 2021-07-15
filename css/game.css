@@ -1,15 +1,24 @@
 #game-root {
   height: 100vh;
+  width: 100vw;
   background-color: var(--main-color);
   color: var(--text-color);
   
-  display: none;
+  border: 2px solid black;
+  margin: auto;
+  /* display: none; */
 }
-#game-root>.content {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
+/* #game-root>.game-info {
+  width: 100vw;
+  height: 20vh;
+  background-color: white;
+  border-bottom: 2px solid black;
+} */
+
+#game-root>#game-content {
+  width: inherit;
+  height: inherit;
+  /* height: 80vh; */
 }
 
 #plankton {
