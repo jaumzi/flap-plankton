@@ -7,13 +7,18 @@ export class Plankton extends CanvasItem {
   commands;
   position;
   size;
-  distanceMoviment = 8;
+  distanceMoviment = 10;
 
   constructor(position = { x: 0, y: 0 }, size = { h: 50, w: 50 }) {
     super();
 
+    const sizeAux = {
+      h: size.h > 150 ? 150 : size.h,
+      w: size.w > 100 ? 100 : size.w
+    }
+
     this.position = position;
-    this.size = size;
+    this.size = sizeAux;
 
     this.img = new Image();
     this.img.src = "./assets/img/plankton.png";
@@ -59,7 +64,7 @@ export class Plankton extends CanvasItem {
   }
 
   applyGravity() {
-    this.position.y += this.distanceMoviment / 3;
+    this.position.y += this.distanceMoviment / 2;
 
     const planktonMaxPositionY = this.canvas.height - this.size.h - 5;
     if (this.position.y > planktonMaxPositionY) {

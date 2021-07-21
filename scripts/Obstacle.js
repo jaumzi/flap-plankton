@@ -1,24 +1,26 @@
 import { CanvasItem } from "./CanvasItem.js";
-function rand(min, max) { return Math.random() * (max ? (max - min) : min) + (max ? min : 0) }
+
 export class Obstacle extends CanvasItem {
   img;
   audio;
   commands;
   position;
   size;
-  rotate;
-  distanceMoviment = 1;
+  distanceMoviment = 5;
 
-  constructor(position = { x: 0, y: 0 }, size = { h: 50, w: 40 }, rotate = 0) {
+  constructor(position = { x: 0, y: 0 }, size = { h: 50, w: 40 }, path) {
     super();
 
+    const sizeAux = {
+      h: size.h,
+      w: size.w > 180 ? 180 : size.w
+    }
+
     this.position = position;
-    this.size = size;
-    this.rotate = rotate;
+    this.size = sizeAux;
 
     this.img = new Image();
-    this.img.src = "./assets/img/pineapple.png";
-    this.img.style.transform = 'rotate(90deg)';
+    this.img.src = path;
   }
 
   update() {
@@ -26,23 +28,16 @@ export class Obstacle extends CanvasItem {
     const { w, h } = this.size;
 
     this.context.save();
-    // this.context.translate(x, y);
-    // this.context.rotate(Math.PI);
-    // this.context.translate(-x, -y);
     this.context.drawImage(this.img, x, y, w, h);
-
-    // Matrix transformation
-    this.context.translate(x, y);
-    this.context.rotate(Math.PI);
-    this.context.translate(-x, -y);
-
-    this.context.drawImage(this.img, x, y, w, h);
-    
     this.context.restore();
   }
 
-  moveToLeft() {
-    this.position.x -= this.distanceMoviment;
+  moveToLeft(velocity) {
+    this.position.x -= (this.distanceMoviment + velocity);
+  }
+
+  resetPosition() {
+    this.position.x = this.canvas.width;
   }
 
   verifyIsVisible() {

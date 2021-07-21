@@ -44,6 +44,7 @@ const game = new Game();
 
 game.registerKeysListener();
 game.registerResizeListener();
+game.registerFocusGameListener();
 
 game.run();
 

@@ -158,6 +158,12 @@ export class Game extends CanvasItem {
   frame = 0;
   plakton;
   obstacles = [];
+  obstaclesTemplate = [];
+  obstaclesVelocity = 0;
+  obstaclesVelocityIncrement = 0.5;
+  timerIncrementVelocity;
+  pause = false;
+  playerDead = false;
 
   constructor() {
     super();
@@ -167,20 +173,12 @@ export class Game extends CanvasItem {
       { w: this.canvas.width / 6, h: this.canvas.height / 7 }
     );
 
-    this.obstacles = [
-      new Obstacle(
-        { x: this.canvas.width / 2, y: 200 },
-        { w: this.canvas.width / 4, h: this.canvas.height / 3 }
-      ),
-      // new Obstacle(
-      //   { x: this.canvas.width / 2, y: this.canvas.height / 3 },
-      //   { w: this.canvas.width / 4, h: this.canvas.height / 3 }
-      // ),
-      // new Obstacle(
-      //   { x: this.canvas.width / 2, y: this.canvas.height - (this.canvas.height / 3) },
-      //   { w: this.canvas.width / 4, h: this.canvas.height / 3 }
-      // )
-    ];
+    // set velocity increment
+    this.timerIncrementVelocity = setInterval(() => {
+      if (!this.pause) {
+        this.obstaclesVelocity += this.obstaclesVelocityIncrement;
+      }
+    }, 5000);
   }
 
   registerKeysListener() {
@@ -207,25 +205,138 @@ export class Game extends CanvasItem {
     })
   }
 
+  registerFocusGameListener() {
+    window.addEventListener('blur', () => {
+      this.pauseGame();
+    });
+    window.addEventListener('focus', () => {
+      this.playGame();
+    });
+  }
+
   update() {
+    if (this.pause || this.playerDead) {
+      return;
+    }
+
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     this.plakton.update();
 
     this.obstacles.forEach((obstacle, index) => {
-      // obstacle.moveToLeft();
+      obstacle.moveToLeft(this.obstaclesVelocity);
       obstacle.update();
 
       if (obstacle.verifyIsVisible()) {
         this.obstacles.splice(index, 1);
       }
     });
+
+    this.generateNewObstacles();
+    this.verifyPlanktonColiderInObstacles();
+  }
+
+  generateNewObstacles() {
+    if (this.obstacles.length === 0) {
+      // resets
+      this.obstaclesTemplate = [
+        // new Obstacle(
+        //   { x: this.canvas.width, y: 0 },
+        //   { w: this.canvas.width / 4, h: this.canvas.height / 3 },
+        //   "./assets/img/pineapple_rotate.png"
+        // ),
+        // new Obstacle(
+        //   { x: this.canvas.width, y: this.canvas.height / 3 },
+        //   { w: this.canvas.width / 4, h: this.canvas.height / 3 },
+        //   "./assets/img/siriqueijo.png"
+        // ),
+        new Obstacle(
+          { x: this.canvas.width, y: this.canvas.height - (this.canvas.height / 3) },
+          { w: this.canvas.width / 4, h: this.canvas.height / 3 },
+          "./assets/img/pineapple.png"
+        )
+      ];
+
+      // definitions
+      let obstaclesTemplateArray = this.obstaclesTemplate;
+
+      const firstIndex = getRandomInt(0, obstaclesTemplateArray.length);
+      this.obstacles.push(obstaclesTemplateArray[firstIndex]);
+
+      // obstaclesTemplateArray = obstaclesTemplateArray.filter(template => template !== obstaclesTemplateArray[firstIndex]);
+
+      // const secondIndex = getRandomInt(0, obstaclesTemplateArray.length);
+      // this.obstacles.push(obstaclesTemplateArray[secondIndex]);
+
+    }
+  }
+  verifyPlanktonColiderInObstacles() {
+    for (var i = 0; i < this.obstacles.length; i++) {
+      if (this.verifyObjectsColider(this.obstacles[i], this.plakton)) {
+        console.log('Bateu');
+        this.pauseGame();
+        this.playerDead = true;
+        return;
+      }
+    }
+  }
+
+  verifyObjectsColider(object1, object2) {
+    const object1MinX = object1.position.x;
+    const object1MaxX = object1.position.x + object1.size.w;
+    const object1MinY = object1.position.y;
+    const object1MaxY = object1.position.y + object1.size.h;
+
+    const object2MinX = object2.position.x;
+    const object2MaxX = object2.position.x + object2.size.w;
+    const object2MinY = object2.position.y;
+    const object2MaxY = object2.position.y + object2.size.h;
+
+    console.log(object1MinX, object1MaxX);
+    console.log(object1MinY, object1MaxY);
+    
+    console.log(object2MinX, object2MaxX);
+    console.log(object2MinY, object2MaxY);
+
+    if (
+      (
+        (
+          (object1MinX <= object2MinX && object2MinX <= object1MaxX) ||
+          (object1MinX <= object2MaxX && object2MaxX <= object1MaxX)
+        ) 
+        // ||
+        // (
+        //   (object1MinX <= object2MinX && object2MinX <= object1MaxX) ||
+        //   (object1MinX <= object2MaxX && object2MaxX <= object1MaxX)
+        // )
+      ) 
+      // &&
+
+      // (
+      //   (
+      //     (object1MinY <= object2MinY && object2MinY <= object1MaxY) ||
+      //     (object1MinY <= object2MaxY && object2MaxY <= object1MaxY)
+      //   ) ||
+      //   (
+      //     (object1MinY <= object2MinY && object2MinY <= object1MaxY) ||
+      //     (object1MinY <= object2MaxY && object2MaxY <= object1MaxY)
+      //   )
+      // )
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  pauseGame() {
+    this.pause = true;
+  }
+  playGame() {
+    this.pause = false;
   }
 
   run() {
     this.update();
-
-
     requestAnimationFrame(() => this.run());
   }
 }
