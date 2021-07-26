@@ -240,16 +240,16 @@ export class Game extends CanvasItem {
     if (this.obstacles.length === 0) {
       // resets
       this.obstaclesTemplate = [
-        // new Obstacle(
-        //   { x: this.canvas.width, y: 0 },
-        //   { w: this.canvas.width / 4, h: this.canvas.height / 3 },
-        //   "./assets/img/pineapple_rotate.png"
-        // ),
-        // new Obstacle(
-        //   { x: this.canvas.width, y: this.canvas.height / 3 },
-        //   { w: this.canvas.width / 4, h: this.canvas.height / 3 },
-        //   "./assets/img/siriqueijo.png"
-        // ),
+        new Obstacle(
+          { x: this.canvas.width, y: 0 },
+          { w: this.canvas.width / 4, h: this.canvas.height / 3 },
+          "./assets/img/pineapple_rotate.png"
+        ),
+        new Obstacle(
+          { x: this.canvas.width, y: this.canvas.height / 3 },
+          { w: this.canvas.width / 4, h: this.canvas.height / 3 },
+          "./assets/img/siriqueijo.png"
+        ),
         new Obstacle(
           { x: this.canvas.width, y: this.canvas.height - (this.canvas.height / 3) },
           { w: this.canvas.width / 4, h: this.canvas.height / 3 },
@@ -263,17 +263,15 @@ export class Game extends CanvasItem {
       const firstIndex = getRandomInt(0, obstaclesTemplateArray.length);
       this.obstacles.push(obstaclesTemplateArray[firstIndex]);
 
-      // obstaclesTemplateArray = obstaclesTemplateArray.filter(template => template !== obstaclesTemplateArray[firstIndex]);
+      obstaclesTemplateArray = obstaclesTemplateArray.filter(template => template !== obstaclesTemplateArray[firstIndex]);
 
-      // const secondIndex = getRandomInt(0, obstaclesTemplateArray.length);
-      // this.obstacles.push(obstaclesTemplateArray[secondIndex]);
-
+      const secondIndex = getRandomInt(0, obstaclesTemplateArray.length);
+      this.obstacles.push(obstaclesTemplateArray[secondIndex]);
     }
   }
   verifyPlanktonColiderInObstacles() {
     for (var i = 0; i < this.obstacles.length; i++) {
       if (this.verifyObjectsColider(this.obstacles[i], this.plakton)) {
-        console.log('Bateu');
         this.pauseGame();
         this.playerDead = true;
         return;
@@ -292,39 +290,20 @@ export class Game extends CanvasItem {
     const object2MinY = object2.position.y;
     const object2MaxY = object2.position.y + object2.size.h;
 
-    console.log(object1MinX, object1MaxX);
-    console.log(object1MinY, object1MaxY);
-    
-    console.log(object2MinX, object2MaxX);
-    console.log(object2MinY, object2MaxY);
-
     if (
       (
-        (
-          (object1MinX <= object2MinX && object2MinX <= object1MaxX) ||
-          (object1MinX <= object2MaxX && object2MaxX <= object1MaxX)
-        ) 
-        // ||
-        // (
-        //   (object1MinX <= object2MinX && object2MinX <= object1MaxX) ||
-        //   (object1MinX <= object2MaxX && object2MaxX <= object1MaxX)
-        // )
+        (object1MinX < object2MinX && object2MinX < object1MaxX) ||
+        (object1MinX < object2MaxX && object2MaxX < object1MaxX)
       ) 
-      // &&
-
-      // (
-      //   (
-      //     (object1MinY <= object2MinY && object2MinY <= object1MaxY) ||
-      //     (object1MinY <= object2MaxY && object2MaxY <= object1MaxY)
-      //   ) ||
-      //   (
-      //     (object1MinY <= object2MinY && object2MinY <= object1MaxY) ||
-      //     (object1MinY <= object2MaxY && object2MaxY <= object1MaxY)
-      //   )
-      // )
+      &&
+      (
+        (object1MinY < object2MinY && object2MinY < object1MaxY) ||
+        (object1MinY < object2MaxY && object2MaxY < object1MaxY)
+      )
     ) {
       return true;
     }
+
     return false;
   }
 
